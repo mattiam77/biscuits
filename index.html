@@ -1,23 +1,256 @@
 <!DOCTYPE html>
-<html lang="it">
+<html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Profitto Mensile</title>
-  <!-- Chart.js + PapaParse -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/3.9.1/chart.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>La Biscotteria di Enza</title>
+  <!-- Google Fonts for elegant typography -->
+  <link href="https://fonts.googleapis.com/css2?family=Great+Vibes&family=Nunito:wght@400;600&display=swap" rel="stylesheet">
   <style>
-    body { font-family: sans-serif; margin: 0; padding: 1rem; }
-    .chart-container { max-width: 800px; margin: auto; }
-    canvas { width: 100% !important; height: auto !important; }
+    /* Base styles */
+    body {
+      margin: 0;
+      font-family: 'Nunito', sans-serif;
+      background-color: #fde4f2; /* soft pink page background */
+      color: #333;
+    }
+    h1, h2, h3, p {
+      margin: 0;
+    }
+
+    /* Hero banner */
+    header.hero {
+      background: #e68bbe;
+      background: linear-gradient(45deg, #e68bbe, #f4b8da);  /* soft pink gradient */
+      text-align: center;
+      padding: 4em 2em;
+      color: #fff;
+    }
+    header.hero h1 {
+      font-family: 'Great Vibes', cursive;
+      font-size: 3em;
+      text-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    header.hero p.tagline {
+      font-size: 1.2em;
+      font-style: italic;
+    }
+
+    /* Section titles */
+    section h2 {
+      font-weight: 600;
+      text-align: center;
+      color: #e68bbe;
+      margin: 0 0 1em;
+    }
+    section {
+      padding: 2em 1em;
+    }
+    section:not(.cta) {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* Biscuits showcase grid */
+    .flavor-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 2em;
+    }
+    .flavor-card {
+      background: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      width: 200px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .flavor-card img {
+      width: 100%;
+      display: block;
+      /* Top corners of image will be rounded by parent overflow */
+    }
+    .flavor-card h3 {
+      font-weight: 600;
+      color: #e68bbe;
+      margin: 0.5em 0.5em 0.5em 0.5em;
+    }
+    .flavor-card p {
+      color: #555;
+      margin: 0 0.5em 0.5em 0.5em;
+      font-size: 0.95em;
+    }
+
+    /* Chart section styling */
+    #chart-section {
+      margin: 2em auto;
+      /* White panel for chart for contrast */
+      background: #fff;
+      border-radius: 8px;
+      padding: 2em;
+      max-width: 800px;
+    }
+    /* Make canvas responsive */
+    #chart-section canvas {
+      width: 100%;
+      max-width: 100%;
+      height: auto;
+    }
+
+    /* About section text */
+    .about p {
+      max-width: 800px;
+      margin: 0 auto;
+      text-align: center;
+      line-height: 1.6;
+    }
+
+    /* Contact/CTA section */
+    .cta {
+      background: #e68bbe;
+      text-align: center;
+      color: #fff;
+      padding: 2em 1em;
+    }
+    .cta h2 {
+      color: #fff; /* override heading color for contrast on pink */
+      margin-bottom: 0.5em;
+    }
+    .cta p {
+      max-width: 600px;
+      margin: 0.5em auto;
+    }
+    .cta a.button {
+      display: inline-block;
+      background: #fff;
+      color: #e68bbe;
+      text-decoration: none;
+      font-weight: bold;
+      padding: 0.6em 1.2em;
+      border-radius: 5px;
+      margin-top: 0.5em;
+    }
+    .cta a.button:hover {
+      background: #f4b8da;
+    }
   </style>
 </head>
 <body>
-  <h1>Profitto Mensile</h1>
-  <div class="chart-container">
-    <canvas id="dataChart"></canvas>
-  </div>
-  <script src="js/chart.js"></script>
+
+  <!-- Hero Banner -->
+  <header class="hero">
+    <h1>La Biscotteria di Enza</h1>
+    <p class="tagline">Delicious homemade biscuits with a touch of love</p>
+  </header>
+
+  <!-- Biscuits Flavors Section -->
+  <section class="flavors">
+    <h2>Our Biscuits</h2>
+    <div class="flavor-list">
+      <div class="flavor-card">
+        <img src="https://via.placeholder.com/200" alt="Biscuit flavor 1">
+        <h3>Almond Delight</h3>
+        <p>Crunchy almond biscotti perfect with coffee.</p>
+      </div>
+      <div class="flavor-card">
+        <img src="https://via.placeholder.com/200" alt="Biscuit flavor 2">
+        <h3>Chocolate Hazelnut</h3>
+        <p>Rich cocoa biscuits studded with hazelnuts.</p>
+      </div>
+      <div class="flavor-card">
+        <img src="https://via.placeholder.com/200" alt="Biscuit flavor 3">
+        <h3>Lemon Zest</h3>
+        <p>Bright lemon cookies with a sugary glaze.</p>
+      </div>
+      <div class="flavor-card">
+        <img src="https://via.placeholder.com/200" alt="Biscuit flavor 4">
+        <h3>Classic Butter</h3>
+        <p>Light, buttery shortbread that melts in your mouth.</p>
+      </div>
+      <div class="flavor-card">
+        <img src="https://via.placeholder.com/200" alt="Biscuit flavor 5">
+        <h3>Cinnamon Spice</h3>
+        <p>Warm cinnamon biscuits sprinkled with sugar.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Monthly Profit Chart Section -->
+  <section id="chart-section">
+    <h2>Monthly Profit</h2>
+    <canvas id="profitChart"></canvas>
+  </section>
+
+  <!-- About Us Section -->
+  <section class="about">
+    <h2>About Us</h2>
+    <p>La Biscotteria di Enza was founded by Enza, who turned her passion for baking into a beloved family business. Each biscuit is made with traditional recipes and a pinch of love, bringing joy to our community one bite at a time.</p>
+  </section>
+
+  <!-- Contact/Call-to-Action Section -->
+  <section class="cta">
+    <h2>Get in Touch</h2>
+    <p>Ready to taste the magic? Reach out to place an order or visit us to try our biscuits fresh from the oven!</p>
+    <a href="mailto:info@labiscotteriadiienza.com" class="button">Contact Us</a>
+  </section>
+
+  <!-- External Libraries: Chart.js and PapaParse -->
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.3.1/papaparse.min.js"></script>
+  <!-- Chart initialization script -->
+  <script>
+    // CSV data for monthly profit (Month, Profit)
+    const csvData = `Month,Profit
+January,5000
+February,6200
+March,5800
+April,6900
+May,7200
+June,7500
+July,8000
+August,8200
+September,7900
+October,8300
+November,8700
+December,9000`;
+    // Parse CSV data
+    Papa.parse(csvData, {
+      header: true,
+      complete: function(results) {
+        const labels = [], profits = [];
+        results.data.forEach(row => {
+          if (row.Month && row.Profit) {
+            labels.push(row.Month);
+            profits.push(parseFloat(row.Profit));
+          }
+        });
+        // Create bar chart using Chart.js
+        const ctx = document.getElementById('profitChart').getContext('2d');
+        new Chart(ctx, {
+          type: 'bar',
+          data: {
+            labels: labels,
+            datasets: [{
+              label: 'Profit (€)',
+              data: profits,
+              backgroundColor: 'rgba(230,139,190, 0.3)',  // translucent pink fill
+              borderColor: 'rgba(230,139,190, 1)',        // solid pink border
+              borderWidth: 1
+            }]
+          },
+          options: {
+            responsive: true,
+            plugins: {
+              legend: { display: false }  // hide legend since only one dataset
+            },
+            scales: {
+              y: { beginAtZero: true }
+            }
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>
